@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Baccarat 勢能平衡打法</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum Balance">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+
+<style>
+:root{
+  --bg:#050505;
+  --gold:#f5d06f;
+  --gold2:#c89b3c;
+  --line:#3a2c12;
+  --text:#f7e7b3;
+  --muted:#bba676;
+  --blue:#60a5fa;
+  --red:#f87171;
+  --green:#34d399;
+  --orange:#fb923c;
+  --gray:#94a3b8;
+  --panel:#101010;
+  --shadow:0 0 0 1px rgba(245,208,111,.10), 0 8px 18px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:radial-gradient(circle at top,#15110a 0%,#080808 35%,#000 100%);
+  font-family:Arial,"Microsoft JhengHei",sans-serif;
+}
+body{color:var(--text)}
+.app{
+  max-width:920px;
+  margin:0 auto;
+  padding:8px;
+  display:grid;
+  gap:8px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:10px 12px;
+  background:linear-gradient(180deg,#1a1408 0%, #0d0d0d 100%);
+  box-shadow:var(--shadow);
+}
+.logo-mark{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;color:#111;
+  background:linear-gradient(135deg,#fff2c2 0%,#f5d06f 45%,#b8872e 100%);
+  box-shadow:0 0 12px rgba(245,208,111,.35);
+}
+.logo-title{
+  color:#fff4cf;
+  font-size:18px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.5px;
+}
+.logo-sub{
+  color:#bfa56b;
+  font-size:10px;
+  letter-spacing:1.4px;
+  margin-top:3px;
+}
+
+.top{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.side{
+  background:linear-gradient(180deg,#181818 0%, #101010 100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:10px 8px;
+  box-shadow:var(--shadow);
+}
+.side-title{
+  text-align:center;
+  font-size:16px;
+  font-weight:900;
+  color:#fff2c7;
+  margin-bottom:8px;
+}
+.side-sub{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.card-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+.card-cell{
+  height:54px;
+  border-radius:14px;
+  border:1px solid #5a4319;
+  background:linear-gradient(180deg,#1d1d1d 0%,#121212 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  font-weight:900;
+  color:#fff7dd;
+  user-select:none;
+  cursor:pointer;
+}
+.card-cell.span2{grid-column:1 / span 2}
+.card-cell.active{
+  border-color:#f5d06f;
+  box-shadow:0 0 0 2px rgba(245,208,111,.14), 0 0 12px rgba(245,208,111,.14) inset;
+  background:linear-gradient(180deg,#32270f 0%,#19150d 100%);
+}
+.card-cell.empty::after{
+  font-size:12px;
+  font-weight:800;
+  color:#8a7b57;
+}
+.p1.empty::after{content:"P1"}
+.p2.empty::after{content:"P2"}
+.p3.empty::after{content:"P3"}
+.b1.empty::after{content:"B1"}
+.b2.empty::after{content:"B2"}
+.b3.empty::after{content:"B3"}
+
+.main-panel,
+.predict,
+.keys-panel,
+.history-panel{
+  background:linear-gradient(180deg,#171717 0%, #101010 100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:10px;
+  box-shadow:var(--shadow);
+}
+.info-row{
+  display:grid;
+  grid-template-columns:auto auto 1fr auto auto;
+  gap:6px;
+  align-items:center;
+}
+.badge{
+  min-width:68px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:900;
+  text-align:center;
+  border:1px solid #4a3717;
+  background:#131313;
+}
+.badge.player{color:var(--blue)}
+.badge.banker{color:var(--red)}
+.winner{
+  font-size:18px;
+  font-weight:900;
+  text-align:center;
+}
+.winner.player{color:var(--blue)}
+.winner.banker{color:var(--red)}
+.winner.tie{color:var(--green)}
+
+.btn{
+  border:none;
+  border-radius:12px;
+  padding:8px 10px;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+  color:#111;
+  background:linear-gradient(180deg,#f5d06f 0%, #c89b3c 100%);
+}
+.btn:active{transform:scale(.98)}
+.btn-clear{
+  background:linear-gradient(180deg,#e7e5e4 0%, #a8a29e 100%);
+}
+.btn-history{
+  background:linear-gradient(180deg,#fda4af 0%, #dc2626 100%);
+  color:#fff;
+}
+.detail{
+  margin-top:8px;
+  min-height:18px;
+  font-size:14px;
+  color:#d8c28a;
+}
+
+.predict-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.predict-box{
+  border:1px solid #4a3717;
+  border-radius:14px;
+  background:linear-gradient(180deg,#1a1a1a 0%, #121212 100%);
+  padding:10px 8px;
+}
+.predict-box-title{
+  font-size:14px;
+  font-weight:900;
+  color:#f5d06f;
+  margin-bottom:6px;
+  text-align:center;
+}
+.predict-box-value{
+  font-size:24px;
+  font-weight:900;
+  line-height:1.05;
+  color:#fff5d8;
+  text-align:center;
+}
+.predict-box-meta{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.25;
+  color:#d8c28a;
+  white-space:pre-line;
+  text-align:center;
+}
+.final-box{
+  margin-top:8px;
+  border:1px solid #4a3717;
+  border-radius:14px;
+  background:linear-gradient(180deg,#191919 0%, #111 100%);
+  padding:10px 9px;
+}
+.final-line{
+  font-size:22px;
+  font-weight:900;
+  color:#fff5d8;
+  text-align:center;
+}
+.final-meta{
+  margin-top:6px;
+  font-size:13px;
+  line-height:1.35;
+  color:#d8c28a;
+  white-space:pre-line;
+  text-align:center;
+}
+
+.stats{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.stat{
+  background:linear-gradient(180deg,#191919 0%, #121212 100%);
+  border:1px solid #4a3717;
+  border-radius:14px;
+  padding:10px 6px;
+  text-align:center;
+}
+.stat.best{
+  border-color:#f5d06f;
+  box-shadow:0 0 0 1px rgba(245,208,111,.25),0 0 14px rgba(245,208,111,.20);
+}
+.stat-name{
+  font-size:14px;
+  font-weight:900;
+  color:var(--muted);
+}
+.stat-rate{
+  margin-top:5px;
+  font-size:20px;
+  font-weight:900;
+  color:#f5d06f;
+}
+
+.heat{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+}
+.heat-box,.power-box{
+  background:linear-gradient(180deg,#1a1a1a 0%,#111 100%);
+  border:1px solid #4a3717;
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:15px;
+  font-weight:900;
+  color:#e8d2a1;
+}
+.power-banker{color:#111;background:#f87171}
+.power-player{color:#111;background:#60a5fa}
+.power-wait{color:#111;background:#9ca3af}
+
+.keys-panel{
+  padding:8px 10px 10px;
+  height:auto;
+}
+.key-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+.key{
+  border:1px solid #45351a;
+  background:linear-gradient(180deg,#1f1f1f 0%, #121212 100%);
+  border-radius:12px;
+  min-height:44px;
+  font-size:16px;
+  font-weight:900;
+  color:#f9e3a4;
+  cursor:pointer;
+  touch-action:manipulation;
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset;
+}
+.key:active{
+  transform:scale(.97);
+  box-shadow:0 0 10px rgba(245,208,111,.15);
+}
+.key.skip{
+  color:#d1d5db;
+}
+
+.history-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  margin-bottom:8px;
+}
+.history-title{
+  font-size:16px;
+  font-weight:900;
+  color:#fff1c8;
+}
+.history-sub{
+  font-size:12px;
+  color:var(--muted);
+}
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.history-empty{
+  font-size:14px;
+  color:var(--muted);
+  padding-top:4px;
+}
+.h-item{
+  border:1px solid #4a3717;
+  border-radius:12px;
+  background:linear-gradient(180deg,#1b1b1b 0%, #121212 100%);
+  padding:8px;
+}
+.h-top{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+.h-grid{
+  display:grid;
+  grid-template-columns:110px 1fr 1fr 90px 66px;
+  gap:6px;
+  align-items:center;
+}
+.h-cards{
+  font-size:12px;
+  line-height:1.3;
+  color:#f2dfaf;
+}
+.h-score{
+  margin-top:4px;
+  padding:4px 5px;
+  border:1px solid #4a3717;
+  border-radius:8px;
+  background:#141414;
+  font-size:11px;
+  font-weight:900;
+}
+.h-col{
+  display:grid;
+  gap:4px;
+}
+.h-col-title{
+  font-size:10px;
+  color:#f5d06f;
+  font-weight:900;
+  text-align:center;
+}
+.h-pick{
+  font-size:13px;
+  font-weight:900;
+  text-align:center;
+  border:1px solid #4a3717;
+  border-radius:10px;
+  padding:7px 4px;
+  color:#111;
+}
+.hit{
+  color:#111;
+  background:#16a34a;
+}
+.miss{
+  color:#111;
+  background:#dc2626;
+}
+.draw{
+  color:#111;
+  background:#64748b;
+}
+.h-note{
+  font-size:10px;
+  color:#d8c28a;
+  text-align:center;
+  line-height:1.15;
+  border:1px solid #4a3717;
+  border-radius:8px;
+  padding:5px 4px;
+  background:#141414;
+}
+.h-final{
+  display:grid;
+  gap:4px;
+}
+.h-final-box{
+  font-size:12px;
+  font-weight:900;
+  text-align:center;
+  border:1px solid #4a3717;
+  border-radius:10px;
+  padding:7px 4px;
+  color:#111;
+}
+.h-final-note{
+  font-size:10px;
+  color:#d8c28a;
+  text-align:center;
+  line-height:1.15;
+  border:1px solid #4a3717;
+  border-radius:8px;
+  padding:5px 4px;
+  background:#141414;
+}
+.h-result{
+  font-size:12px;
+  font-weight:900;
+  text-align:center;
+  border-radius:999px;
+  padding:10px 4px;
+  color:#111;
+}
+
+@media (max-width:700px){
+  .app{padding:4px;gap:4px}
+  .logo{padding:6px 8px;border-radius:12px}
+  .logo-mark{width:28px;height:28px;font-size:15px;border-radius:9px}
+  .logo-title{font-size:12px}
+  .logo-sub{font-size:7px;letter-spacing:1px;margin-top:2px}
+
+  .top{gap:4px}
+  .side{padding:6px 4px;border-radius:12px}
+  .side-title{font-size:12px;margin-bottom:4px}
+  .side-sub{font-size:7px;margin-top:2px}
+  .card-grid{gap:4px}
+  .card-cell{height:40px;font-size:13px;border-radius:9px}
+  .card-cell.empty::after{font-size:9px}
+
+  .main-panel{padding:6px;border-radius:12px}
+  .predict{padding:4px 5px;border-radius:11px}
+  .keys-panel{padding:6px;border-radius:12px}
+  .history-panel{padding:4px 5px;border-radius:11px}
+
+  .info-row{grid-template-columns:auto auto 1fr auto auto;gap:3px}
+  .badge{min-width:42px;font-size:9px;padding:4px 4px}
+  .winner{font-size:13px}
+  .btn{font-size:9px;padding:5px 5px;border-radius:8px}
+  .detail{font-size:9px;margin-top:4px;min-height:12px;line-height:1.15}
+
+  .predict-grid{gap:4px}
+  .predict-box{padding:5px 4px;border-radius:9px}
+  .predict-box-title{font-size:8px;margin-bottom:3px}
+  .predict-box-value{font-size:13px;line-height:1}
+  .predict-box-meta{margin-top:3px;font-size:7px;line-height:1.08}
+  .final-box{margin-top:4px;padding:5px 5px;border-radius:9px}
+  .final-line{font-size:13px;line-height:1.02}
+  .final-meta{margin-top:3px;font-size:7px;line-height:1.08}
+
+  .stats{gap:3px;margin-top:4px}
+  .stat{padding:4px 2px;border-radius:8px}
+  .stat-name{font-size:7px}
+  .stat-rate{font-size:11px;margin-top:2px}
+  .heat{gap:3px;margin-top:4px}
+  .heat-box,.power-box{font-size:8px;padding:4px 5px;border-radius:8px;line-height:1.05}
+
+  .key-grid{gap:3px}
+  .key{min-height:30px;font-size:11px;border-radius:8px}
+
+  .history-head{margin-bottom:4px;gap:3px}
+  .history-title{font-size:10px}
+  .history-sub{font-size:7px}
+  .history-list{gap:3px}
+  .h-item{padding:4px;border-radius:8px}
+  .h-top{font-size:7px;margin-bottom:3px;line-height:1.05}
+  .h-grid{grid-template-columns:56px 1fr 1fr 52px 38px;gap:3px}
+  .h-cards{font-size:7px;line-height:1.06}
+  .h-score{font-size:6px;padding:2px 2px;margin-top:2px;border-radius:5px}
+  .h-col{gap:2px}
+  .h-col-title{font-size:6px}
+  .h-pick{font-size:7px;padding:4px 2px;border-radius:6px;line-height:1.05}
+  .h-note{font-size:6px;padding:3px 2px;border-radius:5px;line-height:1.05}
+  .h-final{gap:2px}
+  .h-final-box{font-size:7px;padding:4px 2px;border-radius:6px;line-height:1.05}
+  .h-final-note{font-size:6px;padding:3px 2px;border-radius:5px;line-height:1.05}
+  .h-result{font-size:7px;padding:4px 2px;line-height:1.05}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo">
+    <div class="logo-mark">勢</div>
+    <div>
+      <div class="logo-title">勢能平衡打法</div>
+      <div class="logo-sub">MOMENTUM BALANCE STRATEGY</div>
+    </div>
+  </div>
+
+  <div class="top">
+    <div class="side">
+      <div class="side-title">PLAYER<span class="side-sub">閒家</span></div>
+      <div class="card-grid">
+        <div class="card-cell empty p1" data-index="0"></div>
+        <div class="card-cell empty p2" data-index="1"></div>
+        <div class="card-cell empty p3 span2" data-index="4"></div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="side-title">BANKER<span class="side-sub">莊家</span></div>
+      <div class="card-grid">
+        <div class="card-cell empty b1" data-index="2"></div>
+        <div class="card-cell empty b2" data-index="3"></div>
+        <div class="card-cell empty b3 span2" data-index="5"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-panel">
+    <div class="info-row">
+      <div class="badge player" id="playerScore">閒 0</div>
+      <div class="badge banker" id="bankerScore">莊 0</div>
+      <div class="winner tie" id="winnerText">和局</div>
+      <button id="nextBtn" class="btn" type="button">下一局</button>
+      <button id="clearBoardBtn" class="btn btn-clear" type="button">清除本局</button>
+    </div>
+    <div class="detail" id="detailText">請依序輸入牌面</div>
+  </div>
+
+  <div class="predict">
+    <div class="predict-grid">
+      <div class="predict-box">
+        <div class="predict-box-title">勢能法</div>
+        <div class="predict-box-value" id="momentumValue">-</div>
+        <div class="predict-box-meta" id="momentumMeta">-</div>
+      </div>
+      <div class="predict-box">
+        <div class="predict-box-title">平衡法</div>
+        <div class="predict-box-value" id="balanceValue">-</div>
+        <div class="predict-box-meta" id="balanceMeta">-</div>
+      </div>
+    </div>
+
+    <div class="final-box">
+      <div class="final-line" id="finalLine">最終建議：-</div>
+      <div class="final-meta" id="finalMeta">特別說明：-\n狀態：等待本局完成</div>
+    </div>
+
+    <div class="stats" id="lineStats">
+      <div class="stat"><div class="stat-name">勢能勝率</div><div class="stat-rate">0%</div></div>
+      <div class="stat"><div class="stat-name">平衡勝率</div><div class="stat-rate">0%</div></div>
+      <div class="stat best"><div class="stat-name">最終勝率</div><div class="stat-rate">0%</div></div>
+    </div>
+
+    <div class="heat">
+      <div class="heat-box" id="heatBox">狀態：目前尚無歷史資料</div>
+      <div class="power-box power-wait" id="powerBox">下注：觀望</div>
+    </div>
+  </div>
+
+  <div class="keys-panel">
+    <div class="key-grid" id="cardButtons">
+      <button class="key" type="button" data-card="A">A</button>
+      <button class="key" type="button" data-card="2">2</button>
+      <button class="key" type="button" data-card="3">3</button>
+      <button class="key" type="button" data-card="4">4</button>
+      <button class="key" type="button" data-card="5">5</button>
+      <button class="key" type="button" data-card="6">6</button>
+      <button class="key" type="button" data-card="7">7</button>
+      <button class="key" type="button" data-card="8">8</button>
+      <button class="key" type="button" data-card="9">9</button>
+      <button class="key" type="button" data-card="10">10</button>
+      <button class="key" type="button" data-card="J">J</button>
+      <button class="key" type="button" data-card="Q">Q</button>
+      <button class="key" type="button" data-card="K">K</button>
+      <button class="key skip" type="button" id="skipBtn">不補</button>
+    </div>
+  </div>
+
+  <div class="history-panel">
+    <div class="history-head">
+      <div>
+        <div class="history-title">歷史紀錄</div>
+        <div class="history-sub">最近 10 筆</div>
+      </div>
+      <button id="clearHistoryBtn" class="btn btn-history" type="button">清除歷史</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'baccarat_momentum_balance_fixed_balance_v1';
+  const MAX_HISTORY = 10;
+
+  let values = ['', '', '', '', '', ''];
+  const order = [0, 1, 2, 3, 4, 5];
+  let currentStep = 0;
+  let selectedIndex = null;
+  let historyData = [];
+  let pendingPrediction = null;
+  let completedRoundNo = 0;
+  let actualResults = [];
+  let saveTimer = null;
+
+  const cells = Array.from(document.querySelectorAll('.card-cell'));
+  const cardButtonsEl = document.getElementById('cardButtons');
+  const nextBtn = document.getElementById('nextBtn');
+  const clearBoardBtn = document.getElementById('clearBoardBtn');
+  const skipBtn = document.getElementById('skipBtn');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+  const playerScoreEl = document.getElementById('playerScore');
+  const bankerScoreEl = document.getElementById('bankerScore');
+  const winnerTextEl = document.getElementById('winnerText');
+  const detailTextEl = document.getElementById('detailText');
+  const momentumValueEl = document.getElementById('momentumValue');
+  const momentumMetaEl = document.getElementById('momentumMeta');
+  const balanceValueEl = document.getElementById('balanceValue');
+  const balanceMetaEl = document.getElementById('balanceMeta');
+  const finalLineEl = document.getElementById('finalLine');
+  const finalMetaEl = document.getElementById('finalMeta');
+  const lineStatsEl = document.getElementById('lineStats');
+  const heatBoxEl = document.getElementById('heatBox');
+  const powerBoxEl = document.getElementById('powerBox');
+  const historyListEl = document.getElementById('historyList');
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveToStorage, 120);
+  }
+
+  function saveToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        values,
+        currentStep,
+        selectedIndex,
+        historyData,
+        pendingPrediction,
+        completedRoundNo,
+        actualResults
+      }));
+    } catch (e) {}
+  }
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.values) && data.values.length === 6) values = data.values;
+      currentStep = Number.isInteger(data.currentStep) ? data.currentStep : 0;
+      selectedIndex = Number.isInteger(data.selectedIndex) ? data.selectedIndex : null;
+      historyData = Array.isArray(data.historyData) ? data.historyData.slice(0, MAX_HISTORY) : [];
+      pendingPrediction = data.pendingPrediction || null;
+      completedRoundNo = Number.isInteger(data.completedRoundNo) ? data.completedRoundNo : 0;
+      actualResults = Array.isArray(data.actualResults) ? data.actualResults : [];
+    } catch (e) {}
+  }
+
+  function getValue(card) {
+    if (!card) return 0;
+    if (card === 'A') return 1;
+    if (card === '10' || card === 'J' || card === 'Q' || card === 'K') return 0;
+    return parseInt(card, 10) || 0;
+  }
+
+  function getCards(arr) {
+    return arr.filter(Boolean);
+  }
+
+  function getActualResultLabel(playerTotal, bankerTotal) {
+    if (playerTotal > bankerTotal) return '閒';
+    if (bankerTotal > playerTotal) return '莊';
+    return '和';
+  }
+
+  function getWinnerClass(actual) {
+    if (actual === '閒') return 'winner player';
+    if (actual === '莊') return 'winner banker';
+    return 'winner tie';
+  }
+
+  function getHistoryStatus(prediction, actual) {
+    if (actual === '和') return '和';
+    if (prediction !== '閒' && prediction !== '莊') return '-';
+    return prediction === actual ? '準' : '失敗';
+  }
+
+  function getPickClass(pick) {
+    if (pick === '莊') return 'power-box power-banker';
+    if (pick === '閒') return 'power-box power-player';
+    return 'power-box power-wait';
+  }
+
+  function getPickText(pick) {
+    if (pick === '莊') return '下注：莊';
+    if (pick === '閒') return '下注：閒';
+    return '下注：觀望';
+  }
+
+  function isNatural(p2, b2) {
+    return p2 >= 8 || b2 >= 8;
+  }
+
+  function shouldPlayerDraw(p2) {
+    return p2 <= 5;
+  }
+
+  function shouldBankerDraw(b2, playerThird, playerDrew) {
+    if (!playerDrew) return b2 <= 5;
+    const pt = getValue(playerThird);
+    if (b2 <= 2) return true;
+    if (b2 === 3) return pt !== 8;
+    if (b2 === 4) return pt >= 2 && pt <= 7;
+    if (b2 === 5) return pt >= 4 && pt <= 7;
+    if (b2 === 6) return pt === 6 || pt === 7;
+    return false;
+  }
+
+  function getRoundState() {
+    const playerCards = getCards([values[0], values[1], values[4]]);
+    const bankerCards = getCards([values[2], values[3], values[5]]);
+    const allCards = playerCards.concat(bankerCards);
+
+    const p2 = (getValue(values[0]) + getValue(values[1])) % 10;
+    const b2 = (getValue(values[2]) + getValue(values[3])) % 10;
+    const playerThird = values[4] || null;
+    const bankerThird = values[5] || null;
+
+    let info = '請依序輸入牌面';
+    if (values[0] && values[1] && values[2] && values[3]) {
+      if (isNatural(p2, b2)) {
+        info = '天牌（不補）';
+      } else {
+        info = '';
+        if (playerThird === null) info += shouldPlayerDraw(p2) ? '閒應補牌 ' : '閒不補 ';
+        if (bankerThird === null) {
+          if (playerThird === null && shouldPlayerDraw(p2)) info += '莊待閒第三張後判定';
+          else info += shouldBankerDraw(b2, playerThird, playerThird !== null) ? '莊應補牌' : '莊不補';
+        }
+        if (!info.trim()) info = '本局已輸入完成';
+      }
+    }
+
+    const hasEnough = playerCards.length >= 2 && bankerCards.length >= 2;
+    const playerTotal = hasEnough ? playerCards.reduce((s, c) => s + getValue(c), 0) % 10 : null;
+    const bankerTotal = hasEnough ? bankerCards.reduce((s, c) => s + getValue(c), 0) % 10 : null;
+    const actual = hasEnough ? getActualResultLabel(playerTotal, bankerTotal) : '-';
+
+    return {
+      playerCards,
+      bankerCards,
+      allCards,
+      playerTotal,
+      bankerTotal,
+      actual,
+      info
+    };
+  }
+
+  function getCurrentStreakLength(currentActual) {
+    if (currentActual !== '莊' && currentActual !== '閒') return 0;
+    let streak = 1;
+    for (let i = actualResults.length - 1; i >= 0; i--) {
+      if (actualResults[i] === currentActual) streak++;
+      else break;
+    }
+    return streak;
+  }
+
+  function evaluateMomentum(allCards) {
+    const target = ['8', '9', '10', 'J', 'Q', 'K'];
+    const count = allCards.filter(c => target.includes(c)).length;
+    const pick = count <= 2 ? '莊' : '閒';
+    return {
+      pick,
+      label: '大牌數 ' + count,
+      meta: count <= 2 ? '兩張以下打莊' : '三張以上打閒'
+    };
+  }
+
+  function evaluateBalance(allCards, currentActual) {
+    const minusCards = ['A', '2', '3'];
+    const plusCards = ['4', '5', '6', '7'];
+
+    let score = 0;
+    allCards.forEach(c => {
+      if (minusCards.includes(c)) score -= 1;
+      if (plusCards.includes(c)) score += 1;
+    });
+
+    const streak = getCurrentStreakLength(currentActual);
+    const dragonInvalid = streak >= 4;
+
+    let pick = '和';
+    if (dragonInvalid) {
+      pick = '不適用';
+    } else if (score >= 1) {
+      pick = '莊';
+    } else if (score <= -1) {
+      pick = '閒';
+    } else {
+      pick = '和';
+    }
+
+    return {
+      pick,
+      label: '平衡值 ' + score,
+      meta: dragonInvalid ? '長龍不適用' : (score >= 1 ? '+1以上打莊' : score <= -1 ? '-1以下打閒' : '+0 不下或打和')
+    };
+  }
+
+  function buildPrediction(state) {
+    if (state.playerTotal === null || state.bankerTotal === null) {
+      return {
+        momentumPick: '待輸入',
+        balancePick: '待輸入',
+        finalPick: '觀望',
+        momentumLabel: '-',
+        momentumMeta: '-',
+        balanceLabel: '-',
+        balanceMeta: '-',
+        specialLabel: '尚未完成本局'
+      };
+    }
+
+    const momentum = evaluateMomentum(state.allCards);
+    const balance = evaluateBalance(state.allCards, state.actual);
+
+    let finalPick = '觀望';
+    let specialLabel = '兩邊不同，先觀望';
+
+    if (balance.pick === '不適用') {
+      finalPick = '觀望';
+      specialLabel = '長龍不適用';
+    } else if (
+      (momentum.pick === '莊' || momentum.pick === '閒') &&
+      momentum.pick === balance.pick
+    ) {
+      finalPick = momentum.pick;
+      specialLabel = '同邊訊號勝率較高';
+    } else if (balance.pick === '和') {
+      finalPick = '觀望';
+      specialLabel = '+0 不下或打和';
+    } else if (momentum.pick !== balance.pick) {
+      finalPick = '觀望';
+      specialLabel = '兩邊不同，先觀望';
+    }
+
+    return {
+      momentumPick: momentum.pick,
+      balancePick: balance.pick,
+      finalPick,
+      momentumLabel: momentum.label,
+      momentumMeta: momentum.meta,
+      balanceLabel: balance.label,
+      balanceMeta: balance.meta,
+      specialLabel
+    };
+  }
+
+  function calcSingleRate(key) {
+    const valid = historyData.filter(item => item.actual !== '和' && (item[key] === '莊' || item[key] === '閒'));
+    const hit = valid.filter(item => item[key] === item.actual).length;
+    const total = valid.length;
+    return total === 0 ? 0 : Math.round((hit / total) * 100);
+  }
+
+  function renderStats() {
+    const momentumRate = calcSingleRate('momentumPick');
+    const balanceRate = calcSingleRate('balancePick');
+    const finalRate = calcSingleRate('finalPick');
+
+    const maxRate = Math.max(momentumRate, balanceRate, finalRate);
+
+    const momentumBest = momentumRate === maxRate && maxRate > 0 ? ' best' : '';
+    const balanceBest = balanceRate === maxRate && maxRate > 0 ? ' best' : '';
+    const finalBest = finalRate === maxRate && maxRate > 0 ? ' best' : '';
+
+    lineStatsEl.innerHTML =
+      '<div class="stat' + momentumBest + '"><div class="stat-name">勢能勝率</div><div class="stat-rate">' + momentumRate + '%</div></div>' +
+      '<div class="stat' + balanceBest + '"><div class="stat-name">平衡勝率</div><div class="stat-rate">' + balanceRate + '%</div></div>' +
+      '<div class="stat' + finalBest + '"><div class="stat-name">最終勝率</div><div class="stat-rate">' + finalRate + '%</div></div>';
+
+    if (historyData.length === 0) {
+      heatBoxEl.textContent = '狀態：目前尚無歷史資料';
+    } else {
+      const bestNames = [];
+      if (momentumRate === maxRate) bestNames.push('勢能');
+      if (balanceRate === maxRate) bestNames.push('平衡');
+      if (finalRate === maxRate) bestNames.push('最終');
+      heatBoxEl.textContent = maxRate > 0
+        ? '狀態：' + bestNames.join(' / ') + ' 發威中（' + maxRate + '%）'
+        : '狀態：目前尚無有效勝率資料';
+    }
+  }
+
+  function renderScore(state) {
+    playerScoreEl.textContent = '閒 ' + (state.playerTotal === null ? 0 : state.playerTotal);
+    bankerScoreEl.textContent = '莊 ' + (state.bankerTotal === null ? 0 : state.bankerTotal);
+    winnerTextEl.textContent = state.actual === '閒' ? '閒贏' : state.actual === '莊' ? '莊贏' : '和局';
+    winnerTextEl.className = getWinnerClass(state.actual);
+    detailTextEl.textContent = state.info;
+  }
+
+  function renderPredictFromPrediction(pred) {
+    momentumValueEl.textContent = pred.momentumPick;
+    momentumMetaEl.textContent = pred.momentumLabel + '\n' + pred.momentumMeta;
+    balanceValueEl.textContent = pred.balancePick;
+    balanceMetaEl.textContent = pred.balanceLabel + '\n' + pred.balanceMeta;
+    finalLineEl.textContent = '最終建議：' + pred.finalPick;
+    finalMetaEl.textContent = '特別說明：' + pred.specialLabel;
+
+    powerBoxEl.textContent = getPickText(pred.finalPick);
+    powerBoxEl.className = getPickClass(pred.finalPick);
+  }
+
+  function renderHistory() {
+    const liveItems = [];
+
+    if (pendingPrediction) {
+      liveItems.push({
+        sourceRound: pendingPrediction.sourceRound,
+        targetRound: pendingPrediction.targetRound,
+        player: pendingPrediction.sourcePlayer || '-',
+        banker: pendingPrediction.sourceBanker || '-',
+        playerTotal: pendingPrediction.playerTotal,
+        bankerTotal: pendingPrediction.bankerTotal,
+        actual: '-',
+        momentumPick: pendingPrediction.momentumPick,
+        balancePick: pendingPrediction.balancePick,
+        finalPick: pendingPrediction.finalPick,
+        momentumMeta: pendingPrediction.momentumLabel + ' / ' + pendingPrediction.momentumMeta,
+        balanceMeta: pendingPrediction.balanceLabel + ' / ' + pendingPrediction.balanceMeta,
+        specialLabel: pendingPrediction.specialLabel,
+        isLive: true
+      });
+    }
+
+    const items = liveItems.concat(historyData).slice(0, MAX_HISTORY);
+
+    if (items.length === 0) {
+      historyListEl.innerHTML = '<div class="history-empty">目前還沒有歷史紀錄</div>';
+      return;
+    }
+
+    historyListEl.innerHTML = items.map(item => {
+      const actualClass = item.actual === '和' ? 'draw' : item.actual === '閒' ? 'hit' : item.actual === '莊' ? 'miss' : 'draw';
+
+      const momentumStatus = item.actual === '-' ? '-' : getHistoryStatus(item.momentumPick, item.actual);
+      const balanceStatus = item.actual === '-' ? '-' : getHistoryStatus(item.balancePick, item.actual);
+      const finalStatus = item.actual === '-' ? '-' : getHistoryStatus(item.finalPick, item.actual);
+
+      const momentumClass = momentumStatus === '準' ? 'hit' : momentumStatus === '失敗' ? 'miss' : 'draw';
+      const balanceClass = balanceStatus === '準' ? 'hit' : balanceStatus === '失敗' ? 'miss' : 'draw';
+      const finalClass = finalStatus === '準' ? 'hit' : finalStatus === '失敗' ? 'miss' : 'draw';
+
+      const roundText = '第' + item.sourceRound + '局預測第' + item.targetRound + '局' + (item.isLive ? '（待開）' : '');
+      const actualText = item.actual === '-' ? '待開' : item.actual;
+      const scoreText = (item.playerTotal === null || item.playerTotal === undefined || item.bankerTotal === null || item.bankerTotal === undefined)
+        ? '閒 - / 莊 -'
+        : '閒 ' + item.playerTotal + ' / 莊 ' + item.bankerTotal;
+
+      return '<div class="h-item">' +
+        '<div class="h-top">' + roundText + '</div>' +
+        '<div class="h-grid">' +
+          '<div class="h-cards">' +
+            '<div><strong>閒：</strong>' + (item.player || '-') + '</div>' +
+            '<div><strong>莊：</strong>' + (item.banker || '-') + '</div>' +
+            '<div class="h-score">' + scoreText + '</div>' +
+          '</div>' +
+
+          '<div class="h-col">' +
+            '<div class="h-col-title">勢能法</div>' +
+            '<div class="h-pick ' + momentumClass + '">' + item.momentumPick + '（' + momentumStatus + '）</div>' +
+            '<div class="h-note">' + item.momentumMeta + '</div>' +
+          '</div>' +
+
+          '<div class="h-col">' +
+            '<div class="h-col-title">平衡法</div>' +
+            '<div class="h-pick ' + balanceClass + '">' + item.balancePick + '（' + balanceStatus + '）</div>' +
+            '<div class="h-note">' + item.balanceMeta + '</div>' +
+          '</div>' +
+
+          '<div class="h-final">' +
+            '<div class="h-final-box ' + finalClass + '">' + item.finalPick + '（' + finalStatus + '）</div>' +
+            '<div class="h-final-note">' + item.specialLabel + '</div>' +
+          '</div>' +
+
+          '<div class="h-result ' + actualClass + '">實際：' + actualText + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function highlight() {
+    cells.forEach(c => c.classList.remove('active'));
+    if (selectedIndex !== null) {
+      const target = document.querySelector("[data-index='" + selectedIndex + "']");
+      if (target) target.classList.add('active');
+    }
+  }
+
+  function renderBoard() {
+    cells.forEach(cell => {
+      const idx = parseInt(cell.dataset.index, 10);
+      const val = values[idx];
+      cell.textContent = val;
+      if (val) cell.classList.remove('empty');
+      else cell.classList.add('empty');
+    });
+    highlight();
+  }
+
+  function renderAll() {
+    const state = getRoundState();
+    const livePrediction = buildPrediction(state);
+
+    renderBoard();
+    renderScore(state);
+    renderStats();
+    renderHistory();
+
+    if (pendingPrediction) renderPredictFromPrediction(pendingPrediction);
+    else renderPredictFromPrediction(livePrediction);
+
+    scheduleSave();
+  }
+
+  function inputCard(card) {
+    if (selectedIndex !== null) {
+      values[selectedIndex] = card;
+      selectedIndex = null;
+    } else if (currentStep < 6) {
+      values[order[currentStep]] = card;
+      currentStep += 1;
+    }
+    renderAll();
+  }
+
+  function skip() {
+    if (selectedIndex !== null) {
+      values[selectedIndex] = '';
+      selectedIndex = null;
+      renderAll();
+      return;
+    }
+    if (currentStep < 6) {
+      currentStep += 1;
+      renderAll();
+    }
+  }
+
+  function saveRoundAndNext() {
+    const state = getRoundState();
+
+    if (state.playerCards.length < 2 || state.bankerCards.length < 2) {
+      alert('請至少先輸入閒家與莊家的前兩張牌。');
+      return;
+    }
+
+    if (pendingPrediction) {
+      historyData.unshift({
+        sourceRound: pendingPrediction.sourceRound,
+        targetRound: pendingPrediction.targetRound,
+        player: pendingPrediction.sourcePlayer || '-',
+        banker: pendingPrediction.sourceBanker || '-',
+        playerTotal: pendingPrediction.playerTotal,
+        bankerTotal: pendingPrediction.bankerTotal,
+        actual: state.actual,
+        momentumPick: pendingPrediction.momentumPick,
+        balancePick: pendingPrediction.balancePick,
+        finalPick: pendingPrediction.finalPick,
+        momentumMeta: pendingPrediction.momentumLabel + ' / ' + pendingPrediction.momentumMeta,
+        balanceMeta: pendingPrediction.balanceLabel + ' / ' + pendingPrediction.balanceMeta,
+        specialLabel: pendingPrediction.specialLabel
+      });
+      historyData = historyData.slice(0, MAX_HISTORY);
+    }
+
+    const nextRoundNo = completedRoundNo + 1;
+    const newPrediction = buildPrediction(state);
+
+    pendingPrediction = {
+      sourceRound: nextRoundNo,
+      targetRound: nextRoundNo + 1,
+      sourcePlayer: state.playerCards.join(' '),
+      sourceBanker: state.bankerCards.join(' '),
+      playerTotal: state.playerTotal,
+      bankerTotal: state.bankerTotal,
+      momentumPick: newPrediction.momentumPick,
+      balancePick: newPrediction.balancePick,
+      finalPick: newPrediction.finalPick,
+      momentumLabel: newPrediction.momentumLabel,
+      momentumMeta: newPrediction.momentumMeta,
+      balanceLabel: newPrediction.balanceLabel,
+      balanceMeta: newPrediction.balanceMeta,
+      specialLabel: newPrediction.specialLabel
+    };
+
+    completedRoundNo = nextRoundNo;
+    actualResults.push(state.actual);
+
+    values = ['', '', '', '', '', ''];
+    currentStep = 0;
+    selectedIndex = null;
+
+    renderAll();
+  }
+
+  function clearBoard() {
+    values = ['', '', '', '', '', ''];
+    currentStep = 0;
+    selectedIndex = null;
+    renderAll();
+  }
+
+  function clearHistory() {
+    historyData = [];
+    pendingPrediction = null;
+    completedRoundNo = 0;
+    actualResults = [];
+    renderAll();
+  }
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', function () {
+      selectedIndex = parseInt(cell.dataset.index, 10);
+      highlight();
+      scheduleSave();
+    }, { passive:true });
+  });
+
+  cardButtonsEl.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-card]');
+    if (!btn) return;
+    inputCard(btn.dataset.card);
+  });
+
+  skipBtn.addEventListener('click', skip);
+  nextBtn.addEventListener('click', saveRoundAndNext);
+  clearBoardBtn.addEventListener('click', clearBoard);
+  clearHistoryBtn.addEventListener('click', clearHistory);
+
+  loadFromStorage();
+  renderAll();
+})();
+</script>
+</body>
+</html>
